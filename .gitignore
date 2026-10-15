@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.DS_Store
+results/webots_runs/
+*.egg-info/
+
+# LaTeX build files
+report/*.aux
+report/*.log
+report/*.toc
+report/*.lof
+report/*.lot
+report/*.out
+node_modules/
