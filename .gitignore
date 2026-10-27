@@ -12,3 +12,10 @@ report/*.lof
 report/*.lot
 report/*.out
 node_modules/
+
+# Local Python environment
+.venv/
+
+# Webots local files
+worlds/.*.wbproj
+worlds/.*.jpg
