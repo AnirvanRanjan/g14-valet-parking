@@ -74,15 +74,16 @@ def box_solid(name, cx, cy, z, yaw, lx, ly, lz, colour, collide=True):
 def floor(lp):
     W, H = lp.width, lp.height
     return f"""Solid {{
-  translation {W/2:.3f} {H/2:.3f} -0.05
+  translation {W/2:.3f} {H/2:.3f} 0
   name "asphalt"
+  contactMaterial "default"
   children [
     Shape {{
       appearance PBRAppearance {{ baseColor 0.25 0.25 0.27 roughness 1 metalness 0 }}
-      geometry Box {{ size {W:.3f} {H:.3f} 0.1 }}
+      geometry Box {{ size {W:.3f} {H:.3f} 0.02 }}
     }}
   ]
-  boundingObject Box {{ size {W:.3f} {H:.3f} 0.1 }}
+  boundingObject Plane {{ size {W:.3f} {H:.3f} }}
   locked TRUE
 }}
 """

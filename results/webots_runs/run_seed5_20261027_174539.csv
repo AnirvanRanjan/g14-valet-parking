@@ -1,0 +1,2 @@
+t,x,y,yaw,v,v_ref,steer,state,rule,cte,d_obs
+0.096,3.025,3.011,1.5708,0.000,2.200,0.0000,DRIVE,-,-0.000,inf
