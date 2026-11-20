@@ -1,5 +1,10 @@
 # Autonomous Valet Parking Agent (P13, Group G14)
 
+![Python](https://img.shields.io/badge/Python-3.9%2B-blue?logo=python)
+![Webots](https://img.shields.io/badge/Webots-R2025a%2B-orange)
+![Planner](https://img.shields.io/badge/Planning-Hybrid%20A*-purple)
+![Tests](https://img.shields.io/badge/Tests-unittest-green)
+
 CSAI4014 Algorithms for Intelligent Systems and Robotics, B.Tech CSE (AI & ML), Semester VII, Batch B2, UPES.
 
 A car-like (Ackermann) vehicle in **Webots** picks a free slot in a 48-slot parking lot, plans a
@@ -14,6 +19,19 @@ The three layers follow the *declarative - procedural - reflexive* hierarchy fro
 | Anirvan Ranjan | 500119330 | Agent architecture, slot-selection utility, mission FSM, localisation: `valet/agent.py`, `valet/slot_selection.py`, `valet/localisation.py` |
 | Aditya Pratap Singh Sisodia | 500121985 | Procedural control: `valet/control/` (Pure Pursuit, Stanley, PID, speed profile, tracker) |
 | Priyal Sharma | 500122041 | Reflexive layer, simulator twin, experiments: `valet/reflex.py`, `sim/`, `experiments/` |
+
+## Key Features
+
+- **Hybrid A\*** motion planning for car-like vehicle constraints
+- **Pure Pursuit / Stanley** path tracking with PID speed control
+- Utility-based parking-slot selection
+- Three-layer **declarative–procedural–reflexive** agent architecture
+- Swept-footprint time-to-collision pedestrian safety
+- GPS + odometry Kalman-filter localisation
+- Mission FSM with re-selection and re-planning
+- Headless simulation twin for reproducible experiments
+- Webots integration with generated parking scenarios
+- Automated unit and integration test suite
 
 ## Architecture
 
@@ -30,40 +48,92 @@ The three layers follow the *declarative - procedural - reflexive* hierarchy fro
  Mission FSM: SELECT -> PLAN -> DRIVE -> DOCK -> PARKED   (re-select / re-plan on events)
 ```
 
-## Quick start
+## Quick Start
+
+### 1. Install dependencies
 
 ```bash
 pip install -r requirements.txt
+```
 
-# 1. headless twin: one mission, animated (writes results/demo.gif)
+### 2. Run the headless simulator
+
+Run one animated parking mission:
+
+```bash
 python sim/run_demo.py --seed 3 --pedestrians 2
+```
 
-# 2. unit + integration tests (includes the Webots controller against a fake Driver)
+The generated animation is saved to:
+
+```text
+results/demo.gif
+```
+
+### 3. Run the test suite
+
+Run the unit and integration tests:
+
+```bash
 python -m unittest discover -s tests -v
+```
 
-# 3. all experiments of the report (~15-25 min on 8 cores) and all figures/tables
+The test suite also includes the Webots controller running against a fake Driver.
+
+### 4. Reproduce the experiments
+
+Run the experiments used for the project report:
+
+```bash
 python experiments/run_experiments.py --n 30
 python experiments/make_figures.py
 ```
 
-### Running in Webots (R2025a or newer)
+The complete experiment suite takes approximately **15–25 minutes on an 8-core machine**.
+
+### Running in Webots
+
+Requires **Webots R2025a or newer**.
+
+Generate the parking world:
 
 ```bash
 python tools/make_world.py --seed 3 --occupancy 0.7 --pedestrians 1
-# optional: --planner grid  --law stanley  --reflex fixed  --selector nearest
 ```
-Then open `worlds/valet_parking.wbt` in Webots and press Run. The controller
-`controllers/valet_parking/valet_parking.py` prints the mission states in the Webots console
-and writes a CSV log to `results/webots_runs/`. Webots must use a Python 3.9+ interpreter
-that has NumPy and SciPy installed (Webots > Preferences > Python command).
 
-Troubleshooting:
-* **Car turns the wrong way at the first bend.** Add `"--steer-sign=1"` to `controllerArgs`
-  in the world file. Webots uses positive = right; the agent uses positive = left.
-* **"sensors reading ~0 m" warning.** That sensor sees the car's own body. Move it 3-5 cm
-  outwards in `valet/config.py` (`_sensor_layout`) and run `make_world.py` again.
-* **Car does not reverse in cruise mode.** Run with `"--speed-mode=throttle"`, which uses gears
-  and our PID for the throttle and brake.
+Optional alternatives include:
+
+```text
+--planner grid
+--law stanley
+--reflex fixed
+--selector nearest
+```
+
+Then open:
+
+```text
+worlds/valet_parking.wbt
+```
+
+in Webots and press **Run**.
+
+The controller `controllers/valet_parking/valet_parking.py` prints mission states in the Webots console and writes CSV logs to:
+
+```text
+results/webots_runs/
+```
+
+Webots must use a Python 3.9+ interpreter with NumPy and SciPy installed:
+
+**Webots → Preferences → Python command**
+
+### Troubleshooting
+
+- **Car turns the wrong way at the first bend:** add `"--steer-sign=1"` to `controllerArgs` in the world file. Webots uses positive = right; the agent uses positive = left.
+- **`sensors reading ~0 m` warning:** the sensor may see the car's own body. Move it 3–5 cm outward in `valet/config.py` (`_sensor_layout`) and regenerate the world with `make_world.py`.
+- **Car does not reverse in cruise mode:** run with `"--speed-mode=throttle"`, which uses gears and the project's PID controller for throttle and braking.
+
 
 ## Repository layout
 
@@ -88,10 +158,27 @@ tests/                 unittest suite
 docs/                  meeting log, commit plan, video script, viva preparation
 ```
 
-## Main results (headless twin, 30 random lots per setting)
+## Results
 
-See `results/summary.md` and Section 9 of the report. All numbers are reproducible with the
-commands above: every mission uses a fixed seed.
+The system was evaluated in the headless simulation twin across **30 random parking-lot scenarios per setting**.
+
+The experiments evaluate the main components of the autonomous valet pipeline, including planning, control, slot selection, and reflexive safety behavior.
+
+All experiments are reproducible using fixed random seeds.
+
+Detailed results are available in:
+
+- [`results/summary.md`](results/summary.md) — experiment summary
+- `results/figures/` — generated plots and visualisations
+- `results/tables/` — generated result tables
+- `results/experiments.csv` — raw experiment data
+- `report/` — complete project report and analysis
+
+To reproduce the experiments:
+
+```bash
+python experiments/run_experiments.py --n 30
+python experiments/make_figures.py
 
 ## References
 
