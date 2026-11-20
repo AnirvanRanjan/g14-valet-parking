@@ -1,0 +1,49 @@
+cff-version: 1.2.0
+message: "If you use this project or build upon it, please cite it using the metadata below."
+
+title: "Autonomous Valet Parking Agent"
+
+type: software
+
+authors:
+  - family-names: "Kumar"
+    given-names: "Saurabh"
+
+  - family-names: "Chanana"
+    given-names: "Naman"
+
+  - family-names: "Ranjan"
+    given-names: "Anirvan"
+
+  - family-names: "Sisodia"
+    given-names: "Aditya Pratap Singh"
+
+  - family-names: "Sharma"
+    given-names: "Priyal"
+
+abstract: >-
+  An autonomous valet parking system for a car-like Ackermann vehicle,
+  combining utility-based parking-slot selection, Hybrid A* motion planning,
+  Pure Pursuit and Stanley path tracking, PID speed control, localisation,
+  and a reflexive swept-footprint time-to-collision safety layer. The system
+  includes a Webots integration, headless simulation twin, reproducible
+  experiments, and automated tests.
+
+repository-code: "https://github.com/AnirvanRanjan/g14-valet-parking"
+
+url: "https://github.com/AnirvanRanjan/g14-valet-parking"
+
+license: MIT
+
+keywords:
+  - autonomous-valet-parking
+  - autonomous-driving
+  - robotics
+  - webots
+  - hybrid-a-star
+  - path-planning
+  - pure-pursuit
+  - stanley-controller
+  - pid-control
+  - collision-avoidance
+  - intelligent-systems
